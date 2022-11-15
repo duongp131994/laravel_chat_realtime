@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent implements ShouldBroadcast
+class MessageSent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -34,14 +34,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('chat');
-    }
-
-    public function broadcastWith()
-    {
-        return [
-            'user' => $this->user,
-            'message' => $this->message,
-        ];
+        return new PrivateChannel('channel-name');
     }
 }

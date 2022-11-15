@@ -2,7 +2,6 @@
 
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,16 +27,4 @@ Route::post('message', function (Request $request) {
     broadcast(new MessageSent(auth()->user(), $request->input('message')));
 
     return $request->input('message');
-});
-
-Route::get('login/{id}', function ($id) {
-    Auth::loginUsingId($id);
-
-    return back();
-});
-
-Route::get('logout', function () {
-    Auth::logout();
-
-    return back();
 });

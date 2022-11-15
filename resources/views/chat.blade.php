@@ -15,26 +15,21 @@
 
 <body>
   <div>
-    @foreach (\App\Models\User::all() as $user)
-      <div>
-        <a href="/login/{{ $user->id }}">{{ $user->name }}</a>
-      </div>
-    @endforeach
     <div>
       <a href="/logout">Logout</a>
     </div>
   </div>
   <div id="app" class="container">
-    <h3 class=" text-center">Messaging | User: {{ optional(auth()->user())->name }}</h3>
+    <h3 class=" text-center">Messaging | User: </h3>
     <div class="messaging">
       <div class="inbox_msg">
         <div class="inbox_people">
           <div class="inbox_chat">
-            <div v-for="user in users" class="chat_list">
+            <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                 <div class="chat_ib">
-                  <h5>@{{ user.name }} <span class="chat_date">Dec 25</span></h5>
+                  <h5><span class="chat_date">Dec 25</span></h5>
                 </div>
               </div>
             </div>
@@ -42,21 +37,15 @@
         </div>
         <div class="mesgs">
           <div class="msg_history">
-            <div v-for="message in messages">
-              <div v-if="message.user.id !== id" class="incoming_msg">
+            <div>
+              <div class="incoming_msg">
                 <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                 </div>
                 <div class="received_msg">
                   <div class="received_withd_msg">
-                    <p>@{{ message.message }}</p>
+                    <p></p>
                     <span class="time_date"> 11:01 AM | June 9</span>
                   </div>
-                </div>
-              </div>
-              <div v-else class="outgoing_msg">
-                <div class="sent_msg">
-                  <p>@{{ message.message }}</p>
-                  <span class="time_date"> 11:01 AM | June 9</span>
                 </div>
               </div>
             </div>
@@ -77,31 +66,16 @@
       el: "#app",
       data() {
         return {
-          id: {{ auth()->id() }},
-          message: "",
-          users: [],
-          messages: [],
+          message: ""
         }
       },
       methods: {
         sendMessage() {
-          axios.post('/message', { message: this.message })
-          this.message = ""
+          console.log(this.message)
+            axios.post('/message', { message: this.message })
+            this.message = ''
         }
-      },
-      mounted() {
-        const echo = new Echo({
-          broadcaster: "socket.io"
-        })
-
-        echo.join('chat')
-        .here((users) => {
-          this.users = users
-        })
-        .listen('MessageSent', (event) => {
-          this.messages.push(event);
-        });
-      },
+      }
     })
   </script>
 </body>
